@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import { currencyFormatter } from "../utils/fotmatter";
 
 const Shop = forwardRef((props, ref) => {
-  const { data, error, isPending } = useFetch("/E-comDep/db.json", []);
+  const { data, error, isPending } = useFetch("/db.json", []);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
