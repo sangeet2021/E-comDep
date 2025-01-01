@@ -5,10 +5,7 @@ import Modal from "./Modal";
 import { currencyFormatter } from "../utils/fotmatter";
 
 const Shop = forwardRef((props, ref) => {
-  const { data, error, isPending } = useFetch(
-    "http://localhost:5000/shoes",
-    []
-  );
+  const { data, error, isPending } = useFetch("/E-comDep/db.json", []);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,19 +19,33 @@ const Shop = forwardRef((props, ref) => {
     setSelectedItem(null);
   };
 
+  // Conditional rendering to ensure data is an array before attempting to map over it
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="shop-page" ref={ref}>
       <div className="sub-shop">
         <h1>Browse Products</h1>
 
         <ul className="shop-list">
-          {data.map((item) => (
-            <ShopList
-              key={item.id || item.name}
-              data={item}
-              onItemClick={() => handleItemClick(item)}
-            />
-          ))}
+          {/* Check if data is an array and has elements before using map */}
+          {data.shoes && data.shoes.length > 0 ? (
+            data.shoes.map((item) => (
+              <ShopList
+                key={item.id || item.name}
+                data={item}
+                onItemClick={() => handleItemClick(item)}
+              />
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
         </ul>
       </div>
       {selectedItem && (

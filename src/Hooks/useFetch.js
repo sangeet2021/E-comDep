@@ -6,21 +6,21 @@ const useFetch  = (url, initialData) => {
     const [isPending, setIsPending] = useState(false)
 
     useEffect(() => {
-        setIsPending(true)
-        const fetchIt = async() => {
-            try{
-                const response = await fetch(url);
-                const resData = await response.json();
-                setData(resData)
-                
-            }catch(err){
-                setError(err || "Something went wrong. Please try again later.")
-            }finally{
-                setIsPending(false)
-            }
-        }
+        setIsPending(true);
+        const fetchIt = async () => {
+          try {
+            const response = await fetch("/E-comDep/db.json");
+            const resData = await response.json();
+            console.log("Fetched data:", resData); // Log the response here
+            setData(resData);
+          } catch (err) {
+            setError(err || "Something went wrong. Please try again later.");
+          } finally {
+            setIsPending(false);
+          }
+        };
         fetchIt();
-    }, [url])
+      }, [url]);
 
     return {data, error, isPending}
 }
